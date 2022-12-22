@@ -12,6 +12,16 @@ module.exports = {
     module: {
         rules: [
             {
+                test: path.resolve(__dirname, "src/index.ts"),
+                loader: "imports-loader",
+                options: {
+                    type: "commonjs",
+                    imports: [
+                        "single json3 JSON",
+                    ], // It must be "commonjs", or webpack uses Object.defineProperty on glue code
+                }
+            },
+            {
                 test: /\.(js|ts)$/,
                 loader: "babel-loader",
             },
@@ -29,7 +39,7 @@ module.exports = {
             encoding: "utf16le"
         }),
     ],
-    devtool: 'source-map',
+    devtool: false,
     // optimization: {
     //     minimize: true,
     //     minimizer: [new TerserPlugin({
