@@ -1,3 +1,3 @@
-export function fuga(piyo: string) {
+export async function fuga(piyo: string) {
     WScript.Echo(piyo);
 }
