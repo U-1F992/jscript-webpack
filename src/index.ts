@@ -1,7 +1,7 @@
 import { fuga } from "./lib";
+import * as JSON5 from "json5";
 
-(function main() {
-    const hogehoge = ["ほげ", "ふが", "ぴよ"];
-    hogehoge.forEach(value => fuga(value));
-    WScript.Echo(JSON.stringify(hogehoge))
-})();
+const hogehoge = ["hoge", "fuga", "piyo"];
+hogehoge.forEach(value => fuga(value));
+
+WScript.Echo(JSON5.stringify(hogehoge));

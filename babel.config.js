@@ -1,5 +1,6 @@
-{
-    "presets": [
+module.exports = {
+    exclude: ['./node_modules/core-js'],  // https://github.com/zloirock/core-js/issues/912
+    presets: [
         [
             "@babel/preset-env",
             {
@@ -11,7 +12,7 @@
         ],
         "@babel/preset-typescript"
     ],
-    "plugins": [
-        "@babel/plugin-transform-jscript"
+    plugins: [
+        "@babel/plugin-transform-jscript",
     ]
-}
+};
