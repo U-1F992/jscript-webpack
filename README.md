@@ -7,7 +7,7 @@ webpackなら`Object.defineProperty`を使用しないES3仕様のバンドル�
 ```sh
 npm init --yes
 npm install --save-dev typescript webpack webpack-cli encoding-plugin babel-loader @babel/core @babel/preset-env @babel/preset-typescript @babel/plugin-transform-jscript
-npm install --save core-js regenerator-runtime
+npm install --save core-js regenerator-runtime json3
 ```
 
 ```js:webpack.config.js
@@ -24,6 +24,16 @@ module.exports = {
     },
     module: {
         rules: [
+            {
+                test: path.resolve(__dirname, "src/index.ts"),
+                loader: "imports-loader",
+                options: {
+                    type: "commonjs",
+                    imports: [
+                        "single json3 JSON",
+                    ], // It must be "commonjs", or webpack uses Object.defineProperty on glue code
+                }
+            },
             {
                 test: /\.(js|ts)$/,
                 loader: "babel-loader",
@@ -42,8 +52,8 @@ module.exports = {
             encoding: "utf16le"
         }),
     ],
-    devtool: 'source-map',  // source-mapを使用することはないだろうけど、eval不使用になるので見やすくなる
-    // optimization: {  // バンドルならこちら
+    devtool: false,
+    // optimization: {
     //     minimize: true,
     //     minimizer: [new TerserPlugin({
     //         terserOptions: {
@@ -58,24 +68,27 @@ module.exports = {
 ie 8
 ```
 
-```jsonc:.babelrc
-{
-    "presets": [
+```js:babel.config.js
+module.exports = {
+    exclude: [
+        "./node_modules/core-js"  // https://github.com/zloirock/core-js/issues/912
+    ],
+    presets: [
         [
             "@babel/preset-env",
             {
-                "modules": "commonjs",  // https://github.com/zloirock/core-js/issues/410
                 "loose": true,
+                "modules": "commonjs",  // https://github.com/zloirock/core-js/issues/410
                 "useBuiltIns": "usage",
                 "corejs": 3
             }
         ],
         "@babel/preset-typescript"
     ],
-    "plugins": [
-        "@babel/plugin-transform-jscript"
+    plugins: [
+        "@babel/plugin-transform-jscript",
     ]
-}
+};
 ```
 
 ## Build
