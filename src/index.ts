@@ -9,8 +9,11 @@ hogehoge.forEach(async value => await fuga(value));
 WScript.Echo(useJson(hogehoge));
 
 let id = setTimeout(() => WScript.Echo(`running on ${id}`), 1000);
-WScript.Echo("sleeping");
 WScript.Sleep(2000);
 
-id = setInterval(arg => WScript.Echo(`arg: ${arg}`), 100, "hoge");  // expected "hoge", but "undefined"
+id = setInterval(arg => WScript.Echo(`arg: ${arg}`), 100, "hoge");
+WScript.Sleep(1000);
+
+WScript.Echo("clear");
+clearInterval(id);
 WScript.Sleep(1000);
