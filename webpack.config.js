@@ -1,6 +1,7 @@
 const path = require("path");
 const EncodingPlugin = require("encoding-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const WrapperPlugin = require("wrapper-webpack-plugin");
 
 module.exports = {
     mode: "development",
@@ -35,6 +36,18 @@ module.exports = {
     },
     target: "browserslist",
     plugins: [
+        new WrapperPlugin({
+            header: `
+try {
+`,
+            footer: `
+} catch (e) {
+    throw (e instanceof Error && e.name === 'Error')
+        ? e
+        : new Error('Uncaught ' + (e instanceof Error ? (e.name + (e.message !== '' ? ': ' + e.message : '')) : e.toString()));
+}
+`,
+        }),
         new EncodingPlugin({
             encoding: "utf16le"
         }),

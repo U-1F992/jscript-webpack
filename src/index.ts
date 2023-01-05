@@ -17,3 +17,5 @@ WScript.Sleep(1000);
 WScript.Echo("clear");
 clearInterval(id);
 WScript.Sleep(1000);
+
+throw 42;
